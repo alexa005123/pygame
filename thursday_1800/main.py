@@ -14,7 +14,6 @@ class Food:
     def move_food(self):  # метод движения еды вниз
         self.rect.y += 5
 
-
     def move_plate(self):# метод отрисовки картинки
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
@@ -41,22 +40,23 @@ win = pygame.display.set_mode(window_size) #создание экрана с р�
 fps = pygame.time.Clock() #фпс
 
 while True:
+    fps.tick(40)
     fon.draw_image() #применение метода отрисовки к объекту-класса food (фон)
     plate.draw_image()#применение метода отрисовки к объекту-класса food (тарелка)
     for i in food_list:
+        i.move_food()
         i.draw_image()
-    fps.tick(40)
-    food1.move_food()
-    food2.move_food()
-    food3.move_food()
-    food4.move_food()
-    food5.move_food()
+        if plate.rect.colliderect(i.rect):
+            food_list.remove(i)
+        if i.rect.y > 700:
+            i.rect.y = 0
+    if food_list == []:
+        pygame.QUIT()
     plate.move_plate()
     for event in pygame.event.get():#проходимся по событиям
         if event.type == pygame.QUIT:#если нажал на крестик
             pygame.QUIT()#выйти
     pygame.display.update()
-
 
 
 
